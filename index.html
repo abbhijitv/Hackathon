@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day Emoji Response</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px auto;
+            text-align: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            color: #343a40;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #ffffff;
+            background-color: #343a40;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        select, textarea {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 20px 0;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .emoji {
+            font-size: 100px;
+            margin-top: 20px;
+        }
+        .error {
+            color: #dc3545;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .motivational {
+            font-size: 50px;
+            margin-top: 10px;
+            color: #dd2137;
+        }
+    </style>
+</head>
+<body>
+    <h1>How Was Your Day?</h1>
+    <textarea id="dayDescription" rows="4" placeholder="What happened today?"></textarea>
+    <br>
+    <select id="daySelect">
+        <option value="" disabled selected>Select an option</option>
+        <option value="happy">Happy</option>
+        <option value="great">Great</option>
+        <option value="good">Good</option>
+        <option value="sad">Sad</option>
+        <option value="bad">Bad</option>
+        <option value="terrible">Terrible</option>
+        <option value="angry">Angry</option>
+        <option value="frustrated">Frustrated</option>
+        <option value="excited">Excited</option>
+        <option value="thrilled">Thrilled</option>
+    </select>
+    <br>
+    <button onclick="giveEmoji()">Submit</button>
+    <div id="emojiResponse" class="emoji"></div>
+    <div id="errorResponse" class="error"></div>
+    <div id="motivationalResponse" class="motivational"></div>
+
+    <script>
+        function giveEmoji() {
+            const selectedOption = document.getElementById('daySelect').value;
+            const dayDescription = document.getElementById('dayDescription').value;
+            const emojiResponse = document.getElementById('emojiResponse');
+            const errorResponse = document.getElementById('errorResponse');
+            const motivationalResponse = document.getElementById('motivationalResponse');
+            let emoji = '';
+
+            if (!selectedOption) {
+                errorResponse.innerText = 'Please select an option!';
+                emojiResponse.innerText = '';
+                motivationalResponse.innerText = '';
+                return;
+            }
+
+            if (!dayDescription) {
+                errorResponse.innerText = 'Please describe your day!';
+                emojiResponse.innerText = '';
+                motivationalResponse.innerText = '';
+                return;
+            }
+
+            errorResponse.innerText = '';
+
+            switch (selectedOption) {
+                case 'happy':
+                case 'great':
+                case 'good':
+                    emoji = '😊';
+                    motivationalResponse.innerText = 'You are doing amazing! 😊';
+                    break;
+                case 'sad':
+                case 'bad':
+                case 'terrible':
+                    emoji = '😢';
+                    motivationalResponse.innerText = 'Here is a smile to cheer you up! 😊';
+                    break;
+                case 'angry':
+                case 'frustrated':
+                    emoji = '😠';
+                    motivationalResponse.innerText = 'Take a deep breath, you got this! 😊';
+                    break;
+                case 'excited':
+                case 'thrilled':
+                    emoji = '😃';
+                    motivationalResponse.innerText = '';
+                    break;
+                default:
+                    emoji = '🤔';
+                    motivationalResponse.innerText = '';
+                    break;
+            }
+
+            emojiResponse.innerText = emoji;
+
+            // Save to local storage
+            const dayData = {
+                emotion: selectedOption,
+                description: dayDescription,
+                date: new Date().toLocaleString()
+            };
+            localStorage.setItem('dayData', JSON.stringify(dayData));
+            console.log('Day data saved:', dayData);
+        }
+    </script>
+</body>
+</html>
